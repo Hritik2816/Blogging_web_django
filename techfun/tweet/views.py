@@ -4,6 +4,7 @@ from .forms import TweetForm, UserRegistrationForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from .forms import SearchForm
 
 # Create your views here.
 
@@ -64,3 +65,14 @@ def register(request):
     form = UserRegistrationForm()
 
   return render(request, 'registration/register.html', {'form': form})  
+
+def search_view(request):
+    form = SearchForm()
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Tweet.objects.filter(name__icontains=query)  # Case-insensitive search
+
+    return render(request, 'search/search.html', {'form': form, 'results': results})
