@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from .forms import SearchForm
 
+
 # Create your views here.
 
 def  index(request):
